@@ -12,10 +12,10 @@ describe('App', function() {
       page.navigateTo('/');
     });
 
-    it('should have a title saying Home', () => {
+    it('should have a title saying "People"', () => {
       page.getTitle().then(title => {
-        expect(title).toEqual('Home');
+        expect(title).toEqual('People');
       });
     });
-  })
+  });
 });
