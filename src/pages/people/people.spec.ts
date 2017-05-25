@@ -50,7 +50,7 @@ describe('PeoplePage', function() {
     it('gets the people', () => {
       const db = fixture.debugElement.injector.get(AngularFireDatabase);
       spyOn(db, 'list').and.callThrough();
-      page.ngOnInit();
+      page.ionViewDidLoad();
       expect(db.list).toHaveBeenCalledTimes(1);
       expect(db.list).toHaveBeenCalledWith('/people');
     });
@@ -85,7 +85,7 @@ describe('PeoplePage', function() {
         lastName: 'Smith',
         title: 'Stunt Double'
       }]));
-      page.ngOnInit();
+      page.ionViewDidLoad();
       fixture.detectChanges();
     });
 
