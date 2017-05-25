@@ -7,10 +7,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 
 import { MyApp } from './app.component';
-import { AboutPage } from '../pages/about/about';
-import { PeoplePage } from '../pages/people/people';
-import { TeamsPage } from '../pages/teams/teams';
-import { TabsPage } from '../pages/tabs/tabs';
+import { PagesModule } from '../pages/pages.module';
 
 export const firebaseConfig = {
    apiKey: "AIzaSyCqCZpsRZwqtQpDjsTuPI3mWOTfQMN0hAM",
@@ -23,25 +20,18 @@ export const firebaseConfig = {
 
 @NgModule({
   declarations: [
-    MyApp,
-    AboutPage,
-    PeoplePage,
-    TeamsPage,
-    TabsPage
+    MyApp
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    PagesModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    AboutPage,
-    PeoplePage,
-    TeamsPage,
-    TabsPage
+    MyApp
   ],
   providers: [
     StatusBar,
