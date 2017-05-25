@@ -9,8 +9,13 @@
 <ion-content>
   <ion-list>
     <ion-list-header>The Teams that Work Together</ion-list-header>
-    <ion-item class="text" *ngFor="let team of teams | async">
-      {{team.name}}
+    <ion-item *ngFor="let team of teams | async">
+      <div class="title">
+        {{team.name}}
+      </div>
+      <div class="subtitle">
+        {{team.mission}}
+      </div>
     </ion-item>
   </ion-list>
 </ion-content>
