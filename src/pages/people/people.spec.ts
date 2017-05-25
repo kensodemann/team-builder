@@ -2,9 +2,16 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { IonicModule, Platform, NavController } from 'ionic-angular/index';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
 import { PeoplePage } from './people';
 import { PlatformMock } from '../../../test-config/mocks-ionic';
+
+class AngularFireDatabaseMock {
+  list(c: string): FirebaseListObservable<Array<any>>{
+    return null;
+  }
+}
 
 describe('PeoplePage', function() {
   let headerElement: DebugElement;
@@ -20,6 +27,7 @@ describe('PeoplePage', function() {
       ],
       providers: [
         NavController,
+        { provide: AngularFireDatabase, useClass: AngularFireDatabaseMock },
         { provide: Platform, useClass: PlatformMock }
       ]
     });
@@ -34,6 +42,16 @@ describe('PeoplePage', function() {
 
   it('should create component', () => expect(page).toBeDefined());
 
+  describe('initialization', () => {
+    it('gets the people', () => {
+      const db = fixture.debugElement.injector.get(AngularFireDatabase);
+      spyOn(db, 'list').and.callThrough();
+      page.ngOnInit();
+      expect(db.list).toHaveBeenCalledTimes(1);
+      expect(db.list).toHaveBeenCalledWith('/people');
+    });
+  });
+
   describe('header', () => {
     it('exists', () => { expect(headerElement).toBeDefined() });
 
@@ -44,6 +62,8 @@ describe('PeoplePage', function() {
   });
 
   describe('content', () => {
+    // TODO: work out how to mock a firebase connection, and then mock the list getting
+    // and verify X ion-item nodes are created
     it('exists', () => { expect(contentElement).toBeDefined() });
   });
 });

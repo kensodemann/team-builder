@@ -6,18 +6,10 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-list-header>People will go here...</ion-list-header>
-    <ion-item>
-      In the real world, this would be a list of people
-    </ion-item>
-    <ion-item>
-      People are eatable
-    </ion-item>
-    <ion-item>
-      But that is called canibalism
-    </ion-item>
-    <ion-item>
-      And it is wrong
-    </ion-item>
+    <ion-list-header>The Local Rock Stars</ion-list-header>
+    <ion-item class="text" *ngFor="let person of people | async">
+      <!--TODO: this should use a pipe to format the name...-->
+			{{person.lastName}}, {{person.firstName}}
+		</ion-item>
   </ion-list>
 </ion-content>
