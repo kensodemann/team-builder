@@ -2,14 +2,18 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { IonicModule, Platform, NavController } from 'ionic-angular/index';
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { Observable } from 'rxjs/Observable';
+
+import 'rxjs/add/observable/empty';
+import 'rxjs/add/observable/of';
 
 import { PeoplePage } from './people';
 import { PlatformMock } from '../../../test-config/mocks-ionic';
 
 class AngularFireDatabaseMock {
-  list(c: string): FirebaseListObservable<Array<any>>{
-    return null;
+  list(c: string): Observable<Array<any>> {
+    return Observable.empty();
   }
 }
 
@@ -62,8 +66,34 @@ describe('PeoplePage', function() {
   });
 
   describe('content', () => {
-    // TODO: work out how to mock a firebase connection, and then mock the list getting
-    // and verify X ion-item nodes are created
+    beforeEach(() => {
+      const db = fixture.debugElement.injector.get(AngularFireDatabase);
+      spyOn(db, 'list').and.returnValue(Observable.of([{
+        firstName: 'Testy',
+        lastName: 'McTesterson',
+        title: 'Replacement'
+      }, {
+        firstName: 'Fakey',
+        lastName: 'Fakepants',
+        title: 'Fill In'
+      }, {
+        firstName: 'Jimmy',
+        lastName: 'Jamerson',
+        title: 'Stand In'
+      }, {
+        firstName: 'Grouch',
+        lastName: 'Smith',
+        title: 'Stunt Double'
+      }]));
+      page.ngOnInit();
+      fixture.detectChanges();
+    });
+
     it('exists', () => { expect(contentElement).toBeDefined() });
+
+    it('contains an ion-item for each person', () => {
+      const itemElements = contentElement.queryAll(By.css('ion-item'));
+      expect(itemElements.length).toEqual(4);
+    });
   });
 });
