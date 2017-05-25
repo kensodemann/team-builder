@@ -50,7 +50,7 @@ describe('TeamsPage', function() {
     it('gets the teams', () => {
       const db = fixture.debugElement.injector.get(AngularFireDatabase);
       spyOn(db, 'list').and.callThrough();
-      page.ngOnInit();
+      page.ionViewDidLoad();
       expect(db.list).toHaveBeenCalledTimes(1);
       expect(db.list).toHaveBeenCalledWith('/teams');
     });
@@ -75,7 +75,7 @@ describe('TeamsPage', function() {
         name: 'Test Team 2',
         missing: 'To Finish the Test'
       }]));
-      page.ngOnInit();
+      page.ionViewDidLoad();
       fixture.detectChanges();
     });
 
