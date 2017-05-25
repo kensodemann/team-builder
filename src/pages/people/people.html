@@ -9,7 +9,12 @@
     <ion-list-header>The Local Rock Stars</ion-list-header>
     <ion-item class="text" *ngFor="let person of people | async">
       <!--TODO: this should use a pipe to format the name...-->
-			{{person.lastName}}, {{person.firstName}}
-		</ion-item>
+      <div class="title">
+        {{person.lastName}}, {{person.firstName}}
+      </div>
+      <div class="subtitle">
+        {{person.title}}
+      </div>
+    </ion-item>
   </ion-list>
 </ion-content>

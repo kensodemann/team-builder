@@ -14,3 +14,12 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+.title {
+  font-size: larger;
+}
+
+.subtitle {
+  font-size: small;
+  color: rgb(117, 117, 117)
+}
