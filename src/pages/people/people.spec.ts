@@ -91,8 +91,8 @@ describe('PeoplePage', function() {
 
     it('exists', () => { expect(contentElement).toBeDefined() });
 
-    it('contains an ion-item for each person', () => {
-      const itemElements = contentElement.queryAll(By.css('ion-item'));
+    it('contains an ion-item button for each person', () => {
+      const itemElements = contentElement.queryAll(By.css('button[ion-item=""]'));
       expect(itemElements.length).toEqual(4);
     });
   });

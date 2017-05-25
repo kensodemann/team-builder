@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
+import { PersonPage } from '../person/person';
+
 @IonicPage()
 @Component({
   selector: 'page-people',
@@ -14,5 +16,9 @@ export class PeoplePage {
 
   ionViewDidLoad() {
     this.people = this.db.list('/people');
+  }
+
+  editPerson(person: any): void {
+    this.navCtrl.push(PersonPage, { key: person.$key });
   }
 }
