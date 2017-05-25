@@ -8,10 +8,9 @@
 
 <ion-content>
   <ion-list>
-    <ion-list-header>Teams will go here...</ion-list-header>
-    <ion-item>
-      <ion-icon name="ionic" item-left></ion-icon>
-      In the real world, this would be a team
+    <ion-list-header>The Teams that Work Together</ion-list-header>
+    <ion-item class="text" *ngFor="let team of teams | async">
+      {{team.name}}
     </ion-item>
   </ion-list>
 </ion-content>
