@@ -5,6 +5,7 @@ import { LoginPageModule } from './login/login.module';
 import { PeoplePageModule } from './people/people.module';
 import { PersonPageModule } from './person/person.module';
 import { TabsPageModule } from './tabs/tabs.module';
+import { TeamPageModule } from './team/team.module';
 import { TeamsPageModule } from './teams/teams.module';
 
 @NgModule({
@@ -14,6 +15,7 @@ import { TeamsPageModule } from './teams/teams.module';
     PeoplePageModule,
     PersonPageModule,
     TabsPageModule,
+    TeamPageModule,
     TeamsPageModule
   ]
 })

@@ -95,8 +95,8 @@ describe('TeamsPage', function() {
 
     it('exists', () => { expect(contentElement).toBeDefined() });
 
-     it('contains an ion-item for each team', () => {
-      const itemElements = contentElement.queryAll(By.css('ion-item'));
+    it('contains an ion-item for each team', () => {
+      const itemElements = contentElement.queryAll(By.css('button[ion-item=""]'));
       expect(itemElements.length).toEqual(2);
     });
   });
