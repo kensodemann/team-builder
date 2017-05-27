@@ -46,13 +46,27 @@ describe('PeoplePage', function() {
 
   it('should create component', () => expect(page).toBeDefined());
 
-  describe('initialization', () => {
+  describe('on entry', () => {
     it('gets the people', () => {
       const db = fixture.debugElement.injector.get(AngularFireDatabase);
       spyOn(db, 'list').and.callThrough();
-      page.ionViewDidLoad();
+      page.ionViewDidEnter();
       expect(db.list).toHaveBeenCalledTimes(1);
       expect(db.list).toHaveBeenCalledWith('/people');
+    });
+  });
+
+  describe('on leave', () => {
+    it('unsubscribes', () => {
+      const db = fixture.debugElement.injector.get(AngularFireDatabase);
+      const subscription = { unsubscribe: function() { } };
+      const obs = Observable.of([]);
+      spyOn(db, 'list').and.returnValue(obs);
+      spyOn(obs, 'subscribe').and.returnValue(subscription);
+      page.ionViewDidEnter();
+      spyOn(subscription, 'unsubscribe');
+      page.ionViewDidLeave();
+      expect(subscription.unsubscribe).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -85,7 +99,7 @@ describe('PeoplePage', function() {
         lastName: 'Smith',
         title: 'Stunt Double'
       }]));
-      page.ionViewDidLoad();
+      page.ionViewDidEnter();
       fixture.detectChanges();
     });
 

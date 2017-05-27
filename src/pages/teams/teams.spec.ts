@@ -46,13 +46,27 @@ describe('TeamsPage', function() {
 
   it('should create component', () => expect(page).toBeDefined());
 
-  describe('initialization', () => {
+  describe('on entry', () => {
     it('gets the teams', () => {
       const db = fixture.debugElement.injector.get(AngularFireDatabase);
       spyOn(db, 'list').and.callThrough();
-      page.ionViewDidLoad();
+      page.ionViewDidEnter();
       expect(db.list).toHaveBeenCalledTimes(1);
       expect(db.list).toHaveBeenCalledWith('/teams');
+    });
+  });
+
+  describe('on leave', () => {
+    it('unsubscribes', () => {
+      const db = fixture.debugElement.injector.get(AngularFireDatabase);
+      const subscription = { unsubscribe: function() { } };
+      const obs = Observable.of([]);
+      spyOn(db, 'list').and.returnValue(obs);
+      spyOn(obs, 'subscribe').and.returnValue(subscription);
+      page.ionViewDidEnter();
+      spyOn(subscription, 'unsubscribe');
+      page.ionViewDidLeave();
+      expect(subscription.unsubscribe).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -75,7 +89,7 @@ describe('TeamsPage', function() {
         name: 'Test Team 2',
         missing: 'To Finish the Test'
       }]));
-      page.ionViewDidLoad();
+      page.ionViewDidEnter();
       fixture.detectChanges();
     });
 

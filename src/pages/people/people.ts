@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireDatabase } from 'angularfire2/database';
+
+import { Subscription } from 'rxjs/Subscription';
 
 import { PersonPage } from '../person/person';
 
@@ -10,12 +12,18 @@ import { PersonPage } from '../person/person';
   templateUrl: 'people.html'
 })
 export class PeoplePage {
-  people: FirebaseListObservable<Array<any>>;
+  private peopleSubscription: Subscription;
+  people: Array<any>;
 
   constructor(public navCtrl: NavController, private db: AngularFireDatabase) { }
 
-  ionViewDidLoad() {
-    this.people = this.db.list('/people');
+  ionViewDidEnter() {
+    this.peopleSubscription = this.db.list('/people')
+      .subscribe(people => this.people = people, err => console.log(err));
+  }
+
+  ionViewDidLeave() {
+    this.peopleSubscription.unsubscribe();
   }
 
   editPerson(person: any): void {

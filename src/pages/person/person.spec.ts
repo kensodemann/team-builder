@@ -51,13 +51,13 @@ describe('PeoplePage', function() {
 
   it('should create component', () => expect(page).toBeDefined());
 
-  describe('initialization', () => {
+  describe('on entry', () => {
     it('gets the person', () => {
       const db = fixture.debugElement.injector.get(AngularFireDatabase);
       const navParams = fixture.debugElement.injector.get(NavParams);
       navParams.data = { key: 'kky7342-1138' };
       spyOn(db, 'object').and.callThrough();
-      page.ionViewDidLoad();
+      page.ionViewDidEnter();
       expect(db.object).toHaveBeenCalledTimes(1);
       expect(db.object).toHaveBeenCalledWith('/people/kky7342-1138');
     });
@@ -73,7 +73,7 @@ describe('PeoplePage', function() {
         phoneNumber: '953.995.9829',
         title: 'Dweller of Garbage'
       }));
-      page.ionViewDidLoad();
+      page.ionViewDidEnter();
       expect(page.firstName).toEqual('Oscar');
       expect(page.lastName).toEqual("O'Grouchy");
       expect(page.emailAddress).toEqual('oscar@testme.org');

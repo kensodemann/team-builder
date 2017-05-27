@@ -7,7 +7,7 @@
 <ion-content padding>
   <ion-list>
     <ion-list-header>The Local Rock Stars</ion-list-header>
-    <button ion-item *ngFor="let person of people | async" (click)="editPerson(person)">
+    <button ion-item *ngFor="let person of people" (click)="editPerson(person)">
       <!--TODO: this should use a pipe to format the name...-->
       <div class="title">
         {{person.lastName}}, {{person.firstName}}
