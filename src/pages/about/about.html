@@ -7,7 +7,27 @@
 </ion-header>
 
 <ion-content padding>
-  <div padding>
-    <button ion-button block outline (click)="signOut()">Logout</button>
-  </div>
+  <ion-list>
+    <ion-item>
+      <h1 text-center>
+        Team Builder (Demo)
+      </h1>
+    </ion-item>
+
+    <ion-item>
+      <div text-center>
+        Logged in as: {{displayName}}
+      </div>
+      <div text-center padding>
+        <img [src]="url" />
+      </div>
+    </ion-item>
+
+    <ion-item>
+      <div>
+        <button ion-button block padding outline (click)="signOut()">Logout</button>
+      </div>
+    </ion-item>
+
+  </ion-list>
 </ion-content>
