@@ -2,14 +2,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { IonicModule, Platform, NavController } from 'ionic-angular/index';
-import { Facebook } from '@ionic-native/facebook';
 import { AngularFireAuth } from 'angularfire2/auth';
 
 import { AboutPage } from './about';
 import { PlatformMock } from '../../../test-config/mocks-ionic';
 
 class AngularFireAuthMock { }
-class FacebookMock { }
 
 describe('AboutPage', function() {
   let headerElement: DebugElement;
@@ -26,7 +24,6 @@ describe('AboutPage', function() {
       providers: [
         NavController,
         { provide: AngularFireAuth, useClass: AngularFireAuthMock },
-        { provide: Facebook, useClass: FacebookMock },
         { provide: Platform, useClass: PlatformMock }
       ]
     });

@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/database';
+import { Subscription } from 'rxjs/Subscription';
 
 @IonicPage()
 @Component({
@@ -9,6 +10,7 @@ import { AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/data
   templateUrl: 'person.html',
 })
 export class PersonPage {
+  private personSubscription: Subscription;
   private person: FirebaseObjectObservable<any>;
   private isSaving: boolean = false;
   @ViewChild('personForm') private form: NgForm;
@@ -21,15 +23,19 @@ export class PersonPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private db: AngularFireDatabase) { }
 
-  ionViewDidLoad(): void {
+  ionViewDidEnter(): void {
     this.person = this.db.object(`/people/${this.navParams.data.key}`);
-    this.person.subscribe(p => {
+    this.personSubscription = this.person.subscribe(p => {
       this.firstName = p.firstName;
       this.lastName = p.lastName;
       this.emailAddress = p.emailAddress;
       this.phoneNumber = p.phoneNumber;
       this.title = p.title;
-    });
+    }, err => console.log(err));
+  }
+
+  ionViewDidLeave(): void{
+    this.personSubscription.unsubscribe();
   }
 
   ionViewCanLeave(): boolean | Promise<void> {
@@ -44,8 +50,8 @@ export class PersonPage {
       emailAddress: this.emailAddress,
       phoneNumber: this.phoneNumber,
       title: this.title
-    });
-    this.navCtrl.pop().then(() => this.isSaving = false);
+    }).then(() => this.navCtrl.pop())
+      .then(() => this.isSaving = false);
   }
 
   private confirmCancel(): Promise<void> {
@@ -56,12 +62,12 @@ export class PersonPage {
         buttons: [
           {
             text: 'Yes',
-            handler: () => {resolve();}
+            handler: () => { resolve(); }
           },
           {
             text: 'No',
             role: 'cancel',
-            handler: () => {reject();}
+            handler: () => { reject(); }
           }
         ]
       }).present();

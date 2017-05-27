@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireDatabase } from 'angularfire2/database';
+
+import { Subscription } from 'rxjs/Subscription';
 
 @IonicPage()
 @Component({
@@ -8,11 +10,17 @@ import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/databa
   templateUrl: 'teams.html'
 })
 export class TeamsPage {
-  teams: FirebaseListObservable<Array<any>>;
+  private teamsSubscription: Subscription;
+  teams: Array<any>;
 
   constructor(public navCtrl: NavController, private db: AngularFireDatabase) { }
 
-  ionViewDidLoad() {
-    this.teams = this.db.list('/teams');
+  ionViewDidEnter() {
+    this.teamsSubscription = this.db.list('/teams')
+      .subscribe(teams => this.teams = teams, err => console.log(err));
+  }
+
+  ionViewDidLeave() {
+    this.teamsSubscription.unsubscribe();
   }
 }
