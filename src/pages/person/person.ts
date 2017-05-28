@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/database';
 import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/take';
 
 @IonicPage()
 @Component({
@@ -25,17 +26,13 @@ export class PersonPage {
 
   ionViewDidEnter(): void {
     this.person = this.db.object(`/people/${this.navParams.data.key}`);
-    this.personSubscription = this.person.subscribe(p => {
+    this.personSubscription = this.person.take(1).subscribe(p => {
       this.firstName = p.firstName;
       this.lastName = p.lastName;
       this.emailAddress = p.emailAddress;
       this.phoneNumber = p.phoneNumber;
       this.title = p.title;
     }, err => console.log(err));
-  }
-
-  ionViewDidLeave(): void{
-    this.personSubscription.unsubscribe();
   }
 
   ionViewCanLeave(): boolean | Promise<void> {
