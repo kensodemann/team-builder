@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/database';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/take';
@@ -11,22 +12,51 @@ import 'rxjs/add/operator/take';
 })
 export class TeamPage {
   private team: FirebaseObjectObservable<any>;
+  private isSaving: boolean;
+  @ViewChild('teamForm') private form: NgForm;
 
   name: string;
   mission: string;
   people: Array<any>
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private db: AngularFireDatabase) { }
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private db: AngularFireDatabase) { }
 
   ionViewDidEnter(): void {
     this.getTeam();
     this.getPeople();
   }
 
+  ionViewCanLeave(): boolean | Promise<void> {
+    return !this.form.dirty || this.isSaving || this.confirmCancel();
+  }
+
   save(): void {
+    this.isSaving = true;
     const promises = this.saveMembers();
     promises.push(this.saveTeam());
-    Promise.all(promises).then(() => this.navCtrl.pop());
+    Promise.all(promises)
+      .then(() => this.navCtrl.pop()
+        .then(() => this.isSaving = false));
+  }
+
+  private confirmCancel(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.alertCtrl.create({
+        title: 'Cancel Updates',
+        message: 'Unsaved changes exist. Are you sure you want to cancel without saving?',
+        buttons: [
+          {
+            text: 'Yes',
+            handler: () => { resolve(); }
+          },
+          {
+            text: 'No',
+            role: 'cancel',
+            handler: () => { reject(); }
+          }
+        ]
+      }).present();
+    });
   }
 
   // The "take(1)" calls avoid having to deal with complex scenarios such as what to do if user A
