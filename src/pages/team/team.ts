@@ -24,9 +24,9 @@ export class TeamPage {
   }
 
   save(): void {
-    this.saveTeam();
-    this.saveMembers();
-    this.navCtrl.pop();
+    const promises = this.saveMembers();
+    promises.push(this.saveTeam());
+    Promise.all(promises).then(() => this.navCtrl.pop());
   }
 
   // The "take(1)" calls avoid having to deal with complex scenarios such as what to do if user A
@@ -65,21 +65,24 @@ export class TeamPage {
     });
   }
 
-  private saveMembers(): void {
+  private saveMembers(): Array<any> {
+    const ops = [];
     this.people.forEach(p => {
       if (p.isSelected && !p.memberKey) {
-        this.db.list('/teamMembers').push({
+        ops.push(this.db.list('/teamMembers').push({
           personKey: p.personKey,
           teamKey: this.navParams.data.key
-        })
+        }));
       } else if (!p.isSelected && p.memberKey) {
-        this.db.object(`/teamMembers/${p.memberKey}`).remove();
+        ops.push(this.db.object(`/teamMembers/${p.memberKey}`).remove());
       }
     });
+
+    return ops;
   }
 
-  private saveTeam(): void {
-    this.team.set({
+  private saveTeam(): any {
+    return this.team.set({
       name: this.name,
       mission: this.mission
     });
