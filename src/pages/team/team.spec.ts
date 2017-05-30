@@ -102,19 +102,23 @@ describe('PeoplePage', function() {
       spyOn(db, 'list').and.returnValues(Observable.of([{
         $key: '1',
         firstName: 'Robert',
-        lastName: 'Evans'
+        lastName: 'Evans',
+        title: 'Stinky Cheese Man'
       }, {
         $key: '2',
         firstName: 'Sally',
-        lastName: 'Smith'
+        lastName: 'Smith',
+        title: 'Captain Underpants'
       }, {
         $key: '3',
         firstName: 'Jimmy',
-        lastName: 'Jefferson'
+        lastName: 'Jefferson',
+        title: 'Bringer of Doom'
       }, {
         $key: '4',
         firstName: 'Roberta',
-        lastName: 'Robbinson'
+        lastName: 'Robbinson',
+        title: 'Spreader of Love'
       }]), Observable.of([{
         $key: 'A',
         teamKey: 'kky7342-1138',
@@ -129,24 +133,28 @@ describe('PeoplePage', function() {
         personKey: '1',
         firstName: 'Robert',
         lastName: 'Evans',
+        title: 'Stinky Cheese Man',
         memberKey: undefined,
         isSelected: false
       }, {
         personKey: '2',
         firstName: 'Sally',
         lastName: 'Smith',
+        title: 'Captain Underpants',
         memberKey: 'B',
         isSelected: true
       }, {
         personKey: '3',
         firstName: 'Jimmy',
         lastName: 'Jefferson',
+        title: 'Bringer of Doom',
         memberKey: 'A',
         isSelected: true
       }, {
         personKey: '4',
         firstName: 'Roberta',
         lastName: 'Robbinson',
+        title: 'Spreader of Love',
         memberKey: undefined,
         isSelected: false
       }])

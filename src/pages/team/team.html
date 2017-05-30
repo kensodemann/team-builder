@@ -24,7 +24,14 @@
       <ion-item-divider color="light">Team Members</ion-item-divider>
 
       <ion-item *ngFor="let person of people">
-        <ion-label>{{person.lastName}}, {{person.firstName}}</ion-label>
+        <ion-label>
+          <div class="title">
+            {{person.lastName}}, {{person.firstName}}
+          </div>
+          <div class="subtitle">
+            {{person.title}}
+          </div>
+        </ion-label>
         <ion-checkbox [name]="person.personKey" [(ngModel)]="person.isSelected"></ion-checkbox>
       </ion-item>
     </ion-list>
