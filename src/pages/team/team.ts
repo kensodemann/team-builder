@@ -89,6 +89,7 @@ export class TeamPage {
         personKey: p.$key,
         firstName: p.firstName,
         lastName: p.lastName,
+        title: p.title,
         isSelected: !!tm,
         memberKey: tm && tm.$key
       };
