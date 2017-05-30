@@ -21,18 +21,13 @@ export class PersonPage {
   emailAddress: string;
   phoneNumber: string;
   title: string;
+  teams: Array<string>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private db: AngularFireDatabase) { }
 
   ionViewDidEnter(): void {
-    this.person = this.db.object(`/people/${this.navParams.data.key}`);
-    this.personSubscription = this.person.take(1).subscribe(p => {
-      this.firstName = p.firstName;
-      this.lastName = p.lastName;
-      this.emailAddress = p.emailAddress;
-      this.phoneNumber = p.phoneNumber;
-      this.title = p.title;
-    }, err => console.log(err));
+    this.getPerson();
+    this.getTeams();
   }
 
   ionViewCanLeave(): boolean | Promise<void> {
@@ -49,6 +44,41 @@ export class PersonPage {
       title: this.title
     }).then(() => this.navCtrl.pop())
       .then(() => this.isSaving = false);
+  }
+
+  private getPerson() {
+    this.person = this.db.object(`/people/${this.navParams.data.key}`);
+    this.personSubscription = this.person.take(1).subscribe(p => {
+      this.firstName = p.firstName;
+      this.lastName = p.lastName;
+      this.emailAddress = p.emailAddress;
+      this.phoneNumber = p.phoneNumber;
+      this.title = p.title;
+    }, err => console.log(err));
+  }
+
+  private getTeams() {
+    this.db.list('/teams').take(1)
+      .mergeMap(() => this.db.list('/teamMembers', {
+        query: {
+          orderByChild: 'personKey',
+          equalTo: this.navParams.data.key
+        }
+      }), (teams, members) => {
+        const memberOf = [];
+        if (members.length) {
+          members.forEach(m => {
+            const team = teams.find(t => t.$key === m.teamKey);
+            if (team) {
+              memberOf.push(team.name);
+            }
+          });
+        } else {
+          memberOf.push('None');
+        }
+        return memberOf;
+      })
+      .subscribe(t => this.teams = t);
   }
 
   private confirmCancel(): Promise<void> {

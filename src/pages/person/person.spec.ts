@@ -15,6 +15,10 @@ class AngularFireDatabaseMock {
   object(c: string): Observable<any> {
     return Observable.empty();
   }
+
+  list(c: string, q?: any): Observable<any> {
+    return Observable.of([]);
+  }
 }
 
 class NavParamsMock {
@@ -79,6 +83,80 @@ describe('PeoplePage', function() {
       expect(page.emailAddress).toEqual('oscar@testme.org');
       expect(page.phoneNumber).toEqual('953.995.9829');
       expect(page.title).toEqual('Dweller of Garbage');
+    });
+
+    it('gets the teams and membership information', () => {
+      const db = fixture.debugElement.injector.get(AngularFireDatabase);
+      const navParams = fixture.debugElement.injector.get(NavParams);
+      navParams.data = { key: 'kky7342-1138' };
+      spyOn(db, 'list').and.callThrough();
+      page.ionViewDidEnter();
+      expect(db.list).toHaveBeenCalledTimes(2);
+      expect(db.list).toHaveBeenCalledWith('/teams');
+      expect(db.list).toHaveBeenCalledWith('/teamMembers', {
+        query: {
+          orderByChild: 'personKey',
+          equalTo: 'kky7342-1138'
+        }
+      });
+    });
+
+    it('builds the teams', () => {
+      const db = fixture.debugElement.injector.get(AngularFireDatabase);
+      const navParams = fixture.debugElement.injector.get(NavParams);
+      navParams.data = { key: 'kky7342-1138' };
+      spyOn(db, 'list').and.returnValues(Observable.of([{
+        $key: '1',
+        name: 'Sun Gods',
+        mission: 'Provide Warmth and Goodness'
+      }, {
+        $key: '2',
+        name: 'Ice Wraiths',
+        mission: 'Freeze the World'
+      }, {
+        $key: '3',
+        name: 'Flower Children',
+        mission: 'Make People Sneeze'
+      }, {
+        $key: '4',
+        name: 'Kittens',
+        mission: 'Be Cute and Furry'
+      }]), Observable.of([{
+        $key: 'A',
+        personKey: 'kky7342-1138',
+        teamKey: '3'
+      }, {
+        $key: 'B',
+        personKey: 'kky7342-1138',
+        teamKey: '2'
+      }]));
+      page.ionViewDidEnter();
+      expect(page.teams).toEqual(['Flower Children', 'Ice Wraiths']);
+    });
+
+    it('sets the teams to "none" if the person belongs to no teams', () => {
+      const db = fixture.debugElement.injector.get(AngularFireDatabase);
+      const navParams = fixture.debugElement.injector.get(NavParams);
+      navParams.data = { key: 'kky7342-1138' };
+      spyOn(db, 'list').and.returnValues(Observable.of([{
+        $key: '1',
+        name: 'Sun Gods',
+        mission: 'Provide Warmth and Goodness'
+      }, {
+        $key: '2',
+        name: 'Ice Wraiths',
+        mission: 'Freeze the World'
+      }, {
+        $key: '3',
+        name: 'Flower Children',
+        mission: 'Make People Sneeze'
+      }, {
+        $key: '4',
+        name: 'Kittens',
+        mission: 'Be Cute and Furry'
+      }]), Observable.of([]));
+      page.ionViewDidEnter();
+      expect(page.teams).toEqual(['None']);
     });
   });
 
