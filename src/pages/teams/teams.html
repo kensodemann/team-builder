@@ -9,13 +9,13 @@
 <ion-content>
   <ion-list>
     <ion-list-header>The Teams that Work Together</ion-list-header>
-    <ion-item *ngFor="let team of teams">
+    <button ion-item *ngFor="let team of teams" (click)="editTeam(team)">
       <div class="title">
         {{team.name}}
       </div>
       <div class="subtitle">
         {{team.mission}}
       </div>
-    </ion-item>
+    </button>
   </ion-list>
 </ion-content>
