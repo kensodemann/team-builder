@@ -32,6 +32,13 @@
         <ion-label floating>Phone Number</ion-label>
         <ion-input type="text" name="phoneNumber" [(ngModel)]="phoneNumber"></ion-input>
       </ion-item>
+
+      <ion-item>
+        <div>Member of:</div>
+        <ul>
+          <li *ngFor="let team of teams">{{team}}</li>
+        </ul>
+      </ion-item>
     </ion-list>
 
     <div padding>
