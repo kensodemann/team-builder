@@ -7,7 +7,7 @@ original goal as stated in the README.md.
 These TODOs will only be addressed (if ever) once the original goals have been met.
 
 Given that this was my first application using Ionic v2+ (v3 in this case) and Firebase, I plan on keeping this application
-around to use as a model, so some expantion / improvements may occur after the original purpose for this application is 
+around to use as a model, so some expansion / improvements may occur after the original purpose for this application is 
 accomplished.
 
 ## Improvements
